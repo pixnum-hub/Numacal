@@ -1,170 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Numacal</title>
-  <link rel="icon" href="https://img.icons8.com/ios-filled/50/ffffff/numerology.png"/>
-  <style>
-    :root{
-      --bg:#e5e7eb;
-      --card:#f0f2f5;
-      --text:#000;
-      --shadow-light:rgba(255,255,255,0.8);
-      --shadow-dark:rgba(0,0,0,0.15);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numacal</title>
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        transition: background 0.5s, color 0.5s;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
-    .dark{
-      --bg:#1c1e2a;
-      --card:#2a2c39;
-      --text:#fff;
-      --shadow-light:rgba(0,0,0,0.5);
-      --shadow-dark:rgba(0,0,0,0.9);
+
+    :root {
+        --bg-color: #f0f0f3;
+        --text-color: #333;
+        --card-bg: #ffffff;
+        --accent-color: #0077ff;
+        --shadow-light: #ffffff;
+        --shadow-dark: #d1d9e6;
     }
-    *{box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-    body{
-      background:var(--bg);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      padding:1.5rem;
+
+    body.dark-mode {
+        --bg-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --card-bg: #262626;
+        --accent-color: #00aaff;
+        --shadow-light: #2e2e2e;
+        --shadow-dark: #111111;
     }
-    .wrapper{
-      max-width:480px;
-      width:100%;
-      background:var(--card);
-      border-radius:25px;
-      padding:2rem;
-      text-align:center;
-      box-shadow:12px 12px 20px var(--shadow-dark),-12px -12px 20px var(--shadow-light);
+
+    .container {
+        width: 95%;
+        max-width: 400px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    h1{margin-bottom:1.5rem;}
-    select, input{
-      width:100%;
-      padding:0.8rem;
-      margin:0.6rem 0;
-      border:none;
-      border-radius:15px;
-      background:var(--card);
-      color:var(--text);
-      box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+
+    h1 {
+        text-align: center;
+        color: var(--accent-color);
+        font-weight: 700;
+        margin-top: 10px;
+        margin-bottom: 5px;
     }
-    button{
-      width:100%;
-      padding:0.8rem;
-      margin:0.45rem 0;
-      border:none;
-      border-radius:15px;
-      background:var(--card);
-      color:var(--text);
-      font-weight:600;
-      cursor:pointer;
-      box-shadow:6px 6px 12px var(--shadow-dark),-6px -6px 12px var(--shadow-light);
-      transition:0.2s;
+
+    p {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 14px;
+        color: var(--text-color);
     }
-    button:hover{
-      box-shadow:4px 4px 8px var(--shadow-dark),-4px -4px 8px var(--shadow-light);
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 15px;
+        border: none;
+        background: var(--card-bg);
+        color: var(--text-color);
+        font-size: 16px;
+        text-align: center;
+        box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        margin-bottom: 15px;
+        outline: none;
+        transition: all 0.2s ease;
     }
-    #result, #historySection{margin-top:1rem;}
-    ul{list-style:none;padding:0;margin-top:0.4rem;}
-    li{margin:0.35rem 0;}
-    footer{margin-top:1.6rem;font-size:0.85rem;opacity:0.7;}
-  </style>
+
+    input:focus, select:focus {
+        box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+        transition: transform 0.2s ease, opacity 0.3s ease;
+        margin-bottom: 10px;
+    }
+
+    button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    .calculate-btn {
+        background: var(--accent-color);
+        color: white;
+    }
+
+    .clear-btn {
+        background: #ff4d4d;
+        color: white;
+    }
+
+    #result {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 16px;
+        word-wrap: break-word;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 13px;
+        color: var(--text-color);
+    }
+
+    /* Rounded dark mode toggle inside app frame */
+    .dark-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background: var(--card-bg);
+        border-radius: 50%;
+        box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .dark-toggle:hover { transform: scale(1.1); }
+    .dark-toggle span { font-size: 20px; }
+
+    @media (max-width: 500px) {
+        .container { width: 90%; padding: 25px; }
+        button { font-size: 16px; }
+    }
+</style>
 </head>
 <body>
-  <div class="wrapper">
-    <h1>🔢 Numacal</h1>
 
-    <!-- Numerology System Dropdown -->
-    <select id="numerologySystem">
-      <option value="chaldean">Chaldean</option>
-      <option value="pythagorean">Pythagorean</option>
-      <option value="vedic">Vedic</option>
-      <option value="kabbalah">Kabbalah</option>
+<div class="container">
+    <div class="dark-toggle" id="darkModeToggle"><span>☀️</span></div>
+    <h1>Numacal</h1>
+    <p>Multi-System Numerology Calculator</p>
+
+    <select id="system">
+        <option value="chaldean">Chaldean Numerology</option>
+        <option value="pythagorean">Pythagorean Numerology</option>
+        <option value="vedic">Vedic Numerology</option>
+        <option value="kabbalah">Kabbalah Numerology</option>
     </select>
 
-    <input type="text" id="question" placeholder="Enter your question"/>
+    <input type="text" id="name" placeholder="Enter your question" />
 
-    <button onclick="calculate()">Calculate</button>
-    <button onclick="copyResult()">Copy Result</button>
-    <button onclick="clearAll()">Clear</button>
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <button class="calculate-btn" onclick="calculateNumerology()">Calculate</button>
+    <button class="clear-btn" onclick="clearFields()">Clear</button>
 
     <div id="result"></div>
+    <footer>© Manik Roy 2025. All Rights Reserved.</footer>
+</div>
 
-    <div id="historySection">
-      <h3>History</h3>
-      <ul id="historyList"></ul>
-    </div>
+<script>
+    const darkToggle = document.getElementById('darkModeToggle');
+    darkToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        darkToggle.innerHTML = document.body.classList.contains('dark-mode') ? '<span>🌙</span>' : '<span>☀️</span>';
+    });
 
-    <footer>© Manik Roy 2025</footer>
-  </div>
+    function calculateNumerology() {
+        const name = document.getElementById("name").value.toUpperCase().replace(/[^A-Z]/g, '');
+        const system = document.getElementById("system").value;
+        if (!name) {
+            document.getElementById("result").innerHTML = "<p>Please enter a question or name.</p>";
+            return;
+        }
 
-  <script>
-    // Accurate letter-to-number mappings for all systems
-    const systems = {
-      chaldean:{
-        A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7
-      },
-      pythagorean:{
-        A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
-      },
-      vedic:{ 
-        A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7
-      },
-      kabbalah:{
-        A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:10,K:11,L:12,M:13,N:14,O:15,P:16,Q:17,R:18,S:19,T:20,U:21,V:22,W:23,X:24,Y:25,Z:26
-      }
-    };
+        const systems = {
+            chaldean: { A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7 },
+            pythagorean: { A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8 },
+            vedic: { A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7 },
+            kabbalah: { A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:10,K:20,L:30,M:40,N:50,O:60,P:70,Q:80,R:90,S:100,T:200,U:300,V:400,W:500,X:600,Y:700,Z:800 }
+        };
 
-    let lastResultText="";
+        let values = systems[system];
+        let total = 0;
+        for (let char of name) {
+            if (values[char]) total += values[char];
+        }
 
-    function reduceToSingleDigit(n){
-      while(n>9){n=n.toString().split('').reduce((a,b)=>a+parseInt(b),0);}
-      return n;
+        let compound = total;
+        let single = reduceToSingle(compound);
+        let yesNo = single % 2 === 0 ? "YES" : "NO";
+
+        document.getElementById("result").innerHTML = `
+            <h3>Result</h3>
+            <p><b>System:</b> ${capitalize(system)}</p>
+            <p><b>Compound Number:</b> ${compound}</p>
+            <p><b>Single Digit:</b> ${single}</p>
+            <p><b>Answer:</b> ${yesNo}</p>
+        `;
     }
 
-    function calculate(){
-      const text=document.getElementById('question').value.trim().toUpperCase();
-      if(!text){document.getElementById('result').innerHTML='<p>Please enter a question.</p>';return;}
-
-      const system=document.getElementById('numerologySystem').value;
-      const mapping=systems[system];
-
-      const clean=text.replace(/[^A-Z]/g,'');
-      let total=0;
-      [...clean].forEach(ch=>{
-        total+=mapping[ch]||0;
-      });
-
-      const exp=reduceToSingleDigit(total);
-      const res=(exp%2===0)?"YES":"NO";
-
-      lastResultText = `${system.charAt(0).toUpperCase()+system.slice(1)}: ${exp} → ${res}`;
-      document.getElementById('result').innerHTML=`<p>${system.charAt(0).toUpperCase()+system.slice(1)}: ${exp} → <strong>${res}</strong></p>`;
-
-      const li=document.createElement('li');
-      li.textContent=`Question: ${text} → ${system.charAt(0).toUpperCase()+system.slice(1)}: ${exp} (${res})`;
-      document.getElementById('historyList').prepend(li);
+    function clearFields() {
+        document.getElementById("name").value = "";
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("system").selectedIndex = 0;
     }
 
-    function copyResult(){
-      if(!lastResultText){alert('No result to copy.');return;}
-      navigator.clipboard.writeText(lastResultText);
-      alert('Result copied to clipboard.');
+    function reduceToSingle(num) {
+        while (num > 9 && num !== 11 && num !== 22 && num !== 33) {
+            num = num.toString().split('').reduce((a,b) => a + parseInt(b), 0);
+        }
+        return num;
     }
 
-    function clearAll(){
-      document.getElementById('question').value='';
-      document.getElementById('result').innerHTML='';
-      document.getElementById('historyList').innerHTML='';
-      lastResultText='';
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
+</script>
 
-    function toggleDarkMode(){
-      document.body.classList.toggle('dark');
-    }
-  </script>
 </body>
 </html>
